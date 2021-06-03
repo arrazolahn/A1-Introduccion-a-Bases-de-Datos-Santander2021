@@ -16,6 +16,28 @@
 
 Con base en el ejemplo 1, modifica el agrupamiento para que muestre el costo promedio por habitación por país de las propiedades de tipo casa.
 
+```json
+
+	[{$match: {
+  property_type: "House",
+  bedrooms: {$gte: 1}
+}
+}, {$addFields: {
+   costo_recamara: {$divide: ["$price", "$bedrooms"]}
+}}, {$group: {
+  _id: "$address.country",
+  recamaras: {
+     $sum: 1
+  },
+  total: {
+     $sum: "$costo_recamara"
+  }
+}
+}, {$addFields: {
+   costo_promedio: {
+     $divide: ["$total", "$recamaras"]
+   }
+}}]```
+
 <br/>
 
-[`Anterior`](../Ejemplo-01/Readme.md) | [`Siguiente`](../Readme.md)   
